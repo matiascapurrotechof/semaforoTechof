@@ -1,0 +1,5 @@
+facebook_business
+gspread
+google-auth
+pandas
+numpy
