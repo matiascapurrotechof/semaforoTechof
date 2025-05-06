@@ -1,5 +1,8 @@
-facebook_business
-gspread
-google-auth
 pandas
 numpy
+facebook_business
+google-api-python-client
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+python-dotenv

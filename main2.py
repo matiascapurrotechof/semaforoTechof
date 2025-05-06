@@ -10,13 +10,17 @@ from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 import os
 import time
+from dotenv import load_dotenv
+load_dotenv()
 
 # ------------------------- CONFIGURACIÓN -------------------------
 
-# Facebook Ads App Credentials
-my_app_id = '9567000766756455'
-my_app_secret = '9333d5c7b0a1d9979e1cbb349fbe79af'
-my_access_token = 'EACH9IvJEtmcBO3CCUmcwnA2KZB3HRpEZAbZChoPwoAIDyAZAfg1FCjH0gve1C3TcYXmKIZBMiK1IeUSZAMZA8CGRNY1Kmu16wotFb3hAvAz5d5DQMFVNVtiA08XUgmyZBGUJoFhrOQrO2ZBnfIF02244d7a7HDg1eKufloGsER9bsqIAvn3m8HcBl2jVTstmEXwC3'
+# Facebook Ads App Credentials desde secrets de GitHub Actions
+my_app_id = os.environ['FB_APP_ID']
+my_app_secret = os.environ['FB_APP_SECRET']
+my_access_token = os.environ['FB_ACCESS_TOKEN']
+
+from facebook_business.api import FacebookAdsApi
 FacebookAdsApi.init(my_app_id, my_app_secret, my_access_token)
 
 # Business Manager ID
@@ -24,7 +28,18 @@ business_id = '107833143845430'
 
 # CSV en Drive
 csv_file = 'ads_data.csv'
-service_account_file = 'autosemaforo-f3745e16ca62.json'
+import json
+import tempfile
+
+# Cargar JSON desde la variable de entorno
+service_account_info = json.loads(os.environ['GDRIVE_SERVICE_ACCOUNT_JSON'])
+
+# Guardar temporalmente en un archivo para usarlo con Credentials
+with tempfile.NamedTemporaryFile(mode='w+', delete=False, suffix='.json') as tmp:
+    json.dump(service_account_info, tmp)
+    tmp.flush()
+    service_account_file = tmp.name
+
 drive_folder_id = '1nK0FsepCIJv39ZIuFOkg9X7glwSsfSuW'
 
 # ------------------------- AUTENTICACIÓN GOOGLE DRIVE API -------------------------
